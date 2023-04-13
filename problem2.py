@@ -15,13 +15,12 @@ from generate import GENERATE
 vocab = open("brown_vocab_100.txt")
 
 #load the indices dictionary
-word_index_dict = {}
-for i, line in enumerate(vocab):
-    #TODO: import part 1 code to build dictionary
+word_index_dict={line.rstrip(): i for i, line in enumerate(vocab)}
 
 f = open("brown_100.txt")
 
-counts = #TODO: initialize counts to a zero vector
+counts = []#TODO: initialize counts to a zero vector
+counts=np.zeros()
 
 #TODO: iterate through file and update counts
 
