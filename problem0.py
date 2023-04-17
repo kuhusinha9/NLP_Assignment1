@@ -5,7 +5,8 @@ from nltk.corpus import brown
 from nltk import word_tokenize
 
 # We chose lore and science_fiction
-genres = ['lore', 'science_fiction']
+genres = ['lore', 'science_fiction', None]
+genres_names = ['Lore genre', 'Science Fiction genre', 'all genres']
 # Import brown txt
 
 # Dictionary with word count
@@ -18,47 +19,42 @@ count = sorted(counts.items(), key=lambda item: item[1], reverse=True)
 plt.plot([x[0] for x in count], [x[1] for x in count])
 
 
-for genre in genres:
+for idx, genre in enumerate(genres):
+    tokens = brown.words(categories = genre)
     sentences = brown.sents(categories = genre)
     types = brown.tagged_words(categories = genre)
     
-    # tokenize
-    tokens = brown.words(categories = genre)
-    words = []
-    for token in tokens:
-        if re.search('^\w',token):
-            words.append(token)
-
     #Number of tokens
     num_of_tokens = len(tokens)
-    print(f'The number of tokens in the {genre} genre is: {num_of_tokens}')
+    print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
     #Number of types
     unique_types = set([pair[1] for pair in types])
     num_of_types = len(unique_types)
-    print(f'The number of unique types in the {genre} is: {num_of_types}')
+    print(f'The number of unique types in the {genres_names[idx]} is: {num_of_types}')
 
     #Number of words
-    print(f'The number of words in the {genre} is: {len(words)}')
+    words = [word for word in tokens if word.isalpha()]
+    num_of_words = len(words)
+    print(f'The number of words in the {genres_names[idx]} is: {num_of_words}')
 
     #Average number of words per sentence
-    sentence_lengths = []
-    for sent in sentences:
-        sentence_lengths.append(len(sent))
-    print(f'The average sentence length in the {genre} genre is: {np.mean(sentence_lengths)}')
+    num_of_sentences = len(sentences)
+    print(f'The average number of words per sentence in the {genres_names[idx]} is: {round(num_of_words/num_of_sentences,3)}')
 
     #Average word length. 
     word_lengths = []
     for word in words:
         word_lengths.append(len(word))
-    print(f'The average word length in the {genre} genre is: {np.mean(word_lengths)}')
+    print(f'The average word length in the {genres_names[idx]} genre is: {round(np.mean(word_lengths),3)}')
     
-    #Default part-of-speech tagger on the dataset and identify the ten most frequent POS tags.
-    tagged_words = brown.tagged_words()
-    tags= {}
-    for tag in tagged_words:
-        if tag[1] not in tags.keys():
-            tags[tag[1]]=0
-        tags[tag[1]]+=1
-    tags = sorted(tags.items(), key=lambda item: item[1], reverse=True)
-    for i in range(0,10): print(tags[i])
+    #Run part-of-speech tagger on the dataset and identify the ten most frequent POS tags.
+    pos_tags = nltk.pos_tag(words)
+    pos_tags = [pair[1] for pair in pos_tags]
+    pos_tags = sorted(pos_tags)
+    pos_tags = list(pos_tags for pos_tags,_ in itertools.groupby(pos_tags))
+    pos_tags = sorted(pos_tags, key = lambda x: pos_tags.count(x), reverse = True)
+    print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:10]}')
+    
+
+    
