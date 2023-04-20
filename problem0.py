@@ -5,9 +5,24 @@ from nltk.corpus import brown
 from nltk import word_tokenize
 
 # We chose lore and science_fiction
-genres = ['lore', 'science_fiction', None]
+genres = ['lore', 'government', None]
 genres_names = ['Lore genre', 'Science Fiction genre', 'all genres']
 # Import brown txt
+
+# print brown categories
+print(brown.categories())
+
+#belles letres text store in txt file
+belles_lettres = list(brown.words(categories = 'belles_lettres'))
+belles_letres_txt = open('belles_lettres.txt', 'w')
+belles_letres_txt.write(str(belles_lettres))
+belles_letres_txt.close()
+
+# store the pos tags in a txt file
+belles_letres_pos = list(brown.tagged_words(categories = 'belles_lettres'))
+belles_letres_pos_txt = open('belles_letres_pos.txt', 'w')
+belles_letres_pos_txt.write(str(belles_letres_pos))
+belles_letres_pos_txt.close()
 
 # Dictionary with word count
 counts={}
@@ -52,8 +67,20 @@ for idx, genre in enumerate(genres):
     pos_tags = nltk.pos_tag(words)
     pos_tags = [pair[1] for pair in pos_tags]
     pos_tags = sorted(pos_tags)
-    pos_tags = list(pos_tags for pos_tags,_ in itertools.groupby(pos_tags))
-    pos_tags = sorted(pos_tags, key = lambda x: pos_tags.count(x), reverse = True)
+    
+    pos_tag_first = pos_tags[0]
+    count = 1
+    pos_tag_count_dict = {}
+    for pos_tag in pos_tags[1:]:
+        if pos_tag == pos_tag_first:
+            count += 1
+        else:
+            pos_tag_count_dict[pos_tag_first] = count
+            pos_tag_first = pos_tag
+            count = 1
+
+    pos_tags = sorted(pos_tag_count_dict.items(), key=lambda item: item[1], reverse=True)
+    pos_tags_names = [pair[0] for pair in pos_tags]
     print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:10]}')
     
 
