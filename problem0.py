@@ -55,6 +55,3 @@ for idx, genre in enumerate(genres):
     pos_tags = list(pos_tags for pos_tags,_ in itertools.groupby(pos_tags))
     pos_tags = sorted(pos_tags, key = lambda x: pos_tags.count(x), reverse = True)
     print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:10]}')
-    
-
-    
