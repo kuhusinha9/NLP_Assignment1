@@ -1,0 +1,7 @@
+Word & Condition & Count & Probability \\ \hline 
+past & in the & 1.0 & 1.0 \\ 
+time & in the & 0.0 & 0.0 \\ 
+said & the jury & 0.20833333333333334 & 0.008680555555555556 \\ 
+recommended & the jury & 0.5 & 0.125 \\ 
+that & jury said & 0.0 & 0.0 \\ 
+, & agriculture teacher & 0.011363636363636364 & 0.00012913223140495868 \\ 
