@@ -28,20 +28,19 @@ for line in f:
     for i in text:
         words.append(i.lower())
 
+
 #TODO: iterate through file and update counts
 prev_word = '<s>'
 for word in words:
-    counts[0][0] += 1
-
+    counts[word_index_dict[word]][word_index_dict[prev_word]] += 1
+    prev_word=word
 
 #normalize counts
 probs = normalize(counts, norm='l1', axis=1)
 
 #writeout bigram probabilities to bigram_probs.txt
-bigrams = open("bigram_probs.txt", 'w')
-bigrams.write(str(probs))
 
+np.savetxt("bigram_probs.txt", probs)
 
-bigrams.close()
 vocab.close()
 f.close()
