@@ -12,28 +12,36 @@ import numpy as np
 from sklearn.preprocessing import normalize
 from generate import GENERATE
 import random
+from problem1 import word_index_dict
 
 
-vocab = codecs.open("brown_vocab_100.txt")
+vocab = open("brown_vocab_100.txt")
+f = open("brown_100.txt")
 
-#load the indices dictionary
-word_index_dict = {}
-for i, line in enumerate(vocab):
-    #TODO: import part 1 code to build dictionary
+#initialize numpy 0s array
+counts = np.zeros((len(word_index_dict),len(word_index_dict)))
 
-f = codecs.open("brown_100.txt")
-
-
-counts = #TODO: initialize numpy 0s array
-
+# tokenise brown_100 words
+words=[]
+for line in f:
+    text = line.split()
+    for i in text:
+        words.append(i.lower())
 
 #TODO: iterate through file and update counts
-
-#TODO: normalize counts
-
-
-#TODO: writeout bigram probabilities
+prev_word = '<s>'
+for word in words:
+    counts[0][0] += 1
 
 
+#normalize counts
+probs = normalize(counts, norm='l1', axis=1)
 
+#writeout bigram probabilities to bigram_probs.txt
+bigrams = open("bigram_probs.txt", 'w')
+bigrams.write(str(probs))
+
+
+bigrams.close()
+vocab.close()
 f.close()
