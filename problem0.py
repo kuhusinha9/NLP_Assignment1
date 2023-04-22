@@ -26,6 +26,11 @@ def most_freq_pos_tag(words):
 
     pos_tags = sorted(pos_tag_count_dict.items(), key=lambda item: item[1], reverse=True) # pos_tags with counts
     pos_tags_names = [pair[0] for pair in pos_tags] # pos_tags names only
+
+
+    # add ranks to the word frequency
+    for idx, tag in enumerate(pos_tags):
+        pos_tags[idx] = (tag[0], tag[1], f'({idx+1})')
     return pos_tags
 
 def get_word_frequecy(words):
@@ -87,12 +92,14 @@ def main(genres, genres_names):
 
 
     for idx, genre in enumerate(genres):
-        tokens = brown.words(categories = genre)
+        words = brown.words(categories = genre)
         sentences = brown.sents(categories = genre)
         types = brown.tagged_words(categories = genre)
-        
+
+
         #Number of tokens
-        num_of_tokens = len(tokens)
+       
+        num_of_tokens = len(words)
         print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
         #Number of types
@@ -101,7 +108,6 @@ def main(genres, genres_names):
         print(f'The number of unique types in the {genres_names[idx]} is: {num_of_types}')
 
         #Number of words
-        words = [word for word in tokens if word.isalpha()]
         num_of_words = len(words)
         print(f'The number of words in the {genres_names[idx]} is: {num_of_words}')
 
