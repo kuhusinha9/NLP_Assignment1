@@ -81,7 +81,4 @@ if __name__ == "__main__":
     # Generate 10 sentences
     with open('unigram_generation.txt', 'w') as f:
         for i in range(10):
-            sentence = GENERATE(word_index_dict, probs, "unigram", max_words=10, start_word="<s>")
-            
-            # Save in file 
-            f.write(sentence + "\n")
+            f.write(GENERATE(word_index_dict, probs, "unigram", max_words=10, start_word="<s>") + "\n")
