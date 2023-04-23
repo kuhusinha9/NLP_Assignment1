@@ -12,7 +12,6 @@ import numpy as np
 from sklearn.preprocessing import normalize
 from generate import GENERATE
 import random
-from problem1 import word_index_dict
 
 
 word_index_dict = {}
