@@ -16,17 +16,15 @@ import codecs
 import json
 from sklearn.preprocessing import normalize
 
-
 vocab = codecs.open("brown_vocab_100.txt")
 
-# read brown_100.txt into tokens
+# Read brown_100.txt into tokens
 with open('brown_100.txt') as brown_file:
     tokens = brown_file.read().split()
 
-# read brown_vocab_100.json into word_index_dict
+# Read brown_vocab_100.json into word_index_dict
 with open('word_to_index_100.json') as brown_file:
     word_index_dict = json.load(brown_file)
-
 
 #p(past | in, the) (should be 0.0625 for unsmoothed, and ~0.011305 for smoothed)
 #p(time | in, the)
@@ -37,11 +35,11 @@ with open('word_to_index_100.json') as brown_file:
 
 smoother = 0.1
 
-# initialize probability matrix length index dict as rows and 4 columns
+# Initialize probability matrix length index dict as rows and 4 columns
 prob_matrix = np.zeros((len(word_index_dict), 4)) + smoother
 conditions = [('in', 'the'), ('the', 'jury'), ('jury', 'said'), ('agriculture', 'teacher')]
 variables = [('past',("in",'the')), ('time',("in",'the')), ('said',("the",'jury')), ('recommended',("the",'jury')), ('that',("jury",'said')), (',',("agriculture",'teacher'))]
-# iterate through tokens
+# Iterate through tokens
 second_last_token = None
 last_token = None
 for token in tokens:
@@ -52,10 +50,10 @@ for token in tokens:
     second_last_token = last_token
     last_token = token
 
-# normalize the matrix
+# Normalize the matrix
 prob_matrix = normalize(prob_matrix, axis=0, norm='l1')
 
-# print the probabilities
+# Print the probabilities
 for variable in variables:
     print("p({} | {}, {})".format(variable[0], variable[1][0], variable[1][1]))
     print(round(prob_matrix[word_index_dict[variable[0]]][conditions.index(variable[1])],6))

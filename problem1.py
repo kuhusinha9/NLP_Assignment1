@@ -9,6 +9,14 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 """
 
 def wordindex(file:str)->dict:
+    """ Returns word index dictionary
+
+    Args:
+        file (str): txt file containing all words
+
+    Returns:
+        dict: dictionary with words (keys) and their index (values)
+    """
     word_index={word.rstrip(): i for i, word in enumerate(file)}
     return word_index
 
@@ -16,11 +24,11 @@ if __name__ == "__main__":
 
     word_index_dict = {}
 
-    # read brown_vocab_100.txt into word_index_dict
+    # Read brown_vocab_100.txt into word_index_dict
     with open('brown_vocab_100.txt') as brown_file:
         word_index_dict=wordindex(brown_file)
             
-    # write word_index_dict to word_to_index_100.txt
+    # Write word_index_dict to word_to_index_100.txt
     wf = open('word_to_index_100.txt','w')
     wf.write(str(word_index_dict)) 
     wf.close()

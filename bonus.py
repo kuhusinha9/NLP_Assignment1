@@ -7,14 +7,14 @@ from nltk import word_tokenize
 import itertools
 import copy
 
-# pmi formula
+# Pmi formula
 sums= lambda x: sum(x.values()) # takes sum of dict values
 pmi = lambda x, N, y, z: np.log((x * N) / (sums(y) * sums(z)))
 
-# word dict
+# Word dict
 word_index_dict = {}
 
-# read words
+# Read words
 tokens = brown.words()
 
 last_word = tokens[0]
@@ -31,7 +31,7 @@ for idx, token in enumerate(tokens):
     last_word = token
 
 
-# remove words that occur less than 10 times 
+# Remove words that occur less than 10 times 
 word_index_copy = copy.deepcopy(word_index_dict)
 
 for word in word_index_copy:
@@ -40,22 +40,22 @@ for word in word_index_copy:
         del word_index_dict[word]
 
 pmi_list = []
-# calculate pmi
+# Calculate pmi
 for word in word_index_dict:
     for token in word_index_dict[word]:
         if token in word_index_dict: # I am not sure what to do when the token is not in the dict
             pmi_value = pmi(word_index_dict[word][token], len(tokens), (word_index_dict[word]), word_index_dict[token])
             pmi_list.append((word, token, round(pmi_value,2)))
 
-# sort by pmi
+# Sort by pmi
 pmi_list = sorted(pmi_list, key=lambda item: item[2], reverse=True)
 
-# print top 20 
+# Print top 20 
 print("The top 20")
 for i in range(20):
     print(i+1, pmi_list[i])
 
-# print last 20
+# Print last 20
 print("The last 20")
 for i in range(1,21):
     print(i, pmi_list[-i])

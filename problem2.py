@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     # Exercise 6
 
-    # Open toy corpus
+    # Open toy corpus file
     f = open("toy_corpus.txt")
 
     with open('unigram_eval.txt', 'w') as uniprobs:
@@ -74,6 +74,7 @@ if __name__ == "__main__":
             # Calculate perplexity and save to file
             perplexity = 1/(pow(sentprob, 1.0/sent_len))
             uniprobs.write(str(perplexity) + "\n")
+    # Close toy corpus file
     uniprobs.close()
 
     # Exercise 7

@@ -27,7 +27,6 @@ def most_freq_pos_tag(words):
     pos_tags = sorted(pos_tag_count_dict.items(), key=lambda item: item[1], reverse=True) # pos_tags with counts
     pos_tags_names = [pair[0] for pair in pos_tags] # pos_tags names only
 
-
     # Add ranks to the word frequency
     for idx, tag in enumerate(pos_tags):
         pos_tags[idx] = (tag[0], tag[1], f'({idx+1})')
