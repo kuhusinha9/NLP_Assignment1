@@ -28,14 +28,14 @@ def most_freq_pos_tag(words):
     pos_tags_names = [pair[0] for pair in pos_tags] # pos_tags names only
 
 
-    # add ranks to the word frequency
+    # Add ranks to the word frequency
     for idx, tag in enumerate(pos_tags):
         pos_tags[idx] = (tag[0], tag[1], f'({idx+1})')
     return pos_tags
 
 def get_word_frequecy(words):
     """
-    calculates the word frequency for the words
+    Calculates the word frequency for the words
     """
     word_frequency = {}
     for word in words:
@@ -50,32 +50,31 @@ def get_word_frequecy(words):
     return word_frequency
 
 def plot_zipf(word_frequency, genres_names, idx):
-    # get max frequency for x axis
+    # Get max frequency for x axis
     max_freq = len(word_frequency)
-    # round on nearest 1000
+    # Round on nearest 1000
     rounder1 = lambda x: int(x/1000)*1000
     max_freq = rounder1(max_freq)
     
-
-    # plot Zipf's law for frequencies, two supplots one figure
+    # Plot Zipf's law for frequencies, two supplots one figure
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
     plt.plot([x[0] for x in word_frequency], [x[1] for x in word_frequency])
     plt.title(f'Zipf\'s law for frequencies in {genres_names[idx]}')
     plt.xlabel('Rank')
-    # set x labels less frequent set 5 ticks from 0 to max_freq
+    # Set x labels less frequent set 5 ticks from 0 to max_freq
     plt.xticks([0, max_freq/4, max_freq/2, 3*max_freq/4, max_freq], [0, int(max_freq/4), int(max_freq/2), int(3*max_freq/4), max_freq])
     plt.ylabel('Frequency')
     plt.subplot(1, 2, 2)
-    # log-log plot
+    # Log-log plot
     plt.loglog([x[0] for x in word_frequency], [x[1] for x in word_frequency])
     plt.title(f'Zipf\'s law for frequencies in {genres_names[idx]}')
-    # set x labels log scale 5 ticks from 1 to max_freq log scale
+    # Set x labels log scale 5 ticks from 1 to max_freq log scale
     plt.xticks([int(max_freq**0.2), int(max_freq**0.4), int(max_freq**0.6), int(max_freq**0.8), max_freq], [int(max_freq**0.2), int(max_freq**0.4), int(max_freq**0.6), int(max_freq**0.8), max_freq])
 
     plt.xlabel('Rank')
     plt.ylabel('Frequency')
-    # save fig in plots folder
+    # Save fig in plots folder
     plt.savefig(f'plots/Zipf\'s law for frequencies in {genres_names[idx]}.png')
     plt.close()
 
@@ -96,42 +95,38 @@ def main(genres, genres_names):
         sentences = brown.sents(categories = genre)
         types = brown.tagged_words(categories = genre)
 
-
-        #Number of tokens
-       
+        # Number of tokens
         num_of_tokens = len(words)
         print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
-        #Number of types
+        # Number of types
         unique_types = set([pair[1] for pair in types])
         num_of_types = len(unique_types)
         print(f'The number of unique types in the {genres_names[idx]} is: {num_of_types}')
 
-        #Number of words
+        # Number of words
         num_of_words = len(words)
         print(f'The number of words in the {genres_names[idx]} is: {num_of_words}')
 
-        #Average number of words per sentence
+        # Average number of words per sentence
         num_of_sentences = len(sentences)
         print(f'The average number of words per sentence in the {genres_names[idx]} is: {round(num_of_words/num_of_sentences,3)}')
 
-        #Average word length. 
+        # Average word length. 
         word_lengths = []
         for word in words:
             word_lengths.append(len(word))
         print(f'The average word length in the {genres_names[idx]} genre is: {round(np.mean(word_lengths),3)}')
         
-        #Run part-of-speech tagger on the dataset and identify the ten most frequent POS tags.
+        # Run part-of-speech tagger on the dataset and identify the ten most frequent POS tags.
         pos_tags = most_freq_pos_tag(words)
         print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:18]}')
 
-        #get word counts of unique words
+        # Get word counts of unique words
         word_frequency = get_word_frequecy(words)
 
         # Plot Zipf's law
         plot_zipf(word_frequency, genres_names, idx)
-
-
 
 if __name__ == '__main__':
     # We chose lore and science_fiction
@@ -139,6 +134,3 @@ if __name__ == '__main__':
     genres_names = ['Lore genre', 'Science Fiction genre', 'all genres']
 
     main(genres, genres_names)
-    
-
-    

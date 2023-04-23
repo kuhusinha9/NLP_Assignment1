@@ -59,7 +59,3 @@ prob_matrix = normalize(prob_matrix, axis=0, norm='l1')
 for variable in variables:
     print("p({} | {}, {})".format(variable[0], variable[1][0], variable[1][1]))
     print(round(prob_matrix[word_index_dict[variable[0]]][conditions.index(variable[1])],6))
-
-
-
-
