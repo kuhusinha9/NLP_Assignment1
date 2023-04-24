@@ -53,6 +53,31 @@ b.write(str(bigram('jury','the'))+'\n')
 b.write(str(bigram('campaign','the'))+'\n')
 b.write(str(bigram('calls','anonymous'))+'\n')
 
+#
+# Task 6 code
+#
+t = open("toy_corpus.txt")
+
+# function to calculate the joint probability of a given sentence
+def joint_prob_sent(sent):
+    sentprob = 1
+    sentance=sent.lower().split()
+    for i in range(1,len(sentance)):
+        sentprob *= bigram(sentance[i],sentance[i-1])
+    return sentprob
+
+# function to calculate the perplexity of a given sentence
+def perplexity(sent):
+    return 1/pow(joint_prob_sent(sent), 1/(len(sent.split())-1))
+
+# add perplexities to file
+b2= open("bigram_eval.txt", 'a')
+b2.write(str(perplexity(t.readline()))+'\n')
+b2.write(str(perplexity(t.readline()))+'\n')
+
+# close all open files
+b2.close()
+t.close()
 b.close()
 vocab.close()
 f.close()
