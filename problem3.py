@@ -71,11 +71,19 @@ def perplexity(sent):
     return 1/pow(joint_prob_sent(sent), 1/(len(sent.split())-1))
 
 # add perplexities to file
-b2= open("bigram_eval.txt", 'a')
+b2= open("bigram_eval.txt", 'w')
 b2.write(str(perplexity(t.readline()))+'\n')
 b2.write(str(perplexity(t.readline()))+'\n')
 
+#
+# Task 7 code
+#
+b3 = open("bigram_generation.txt",'w')
+for i in range(0,10):
+    b3.write(GENERATE(word_index_dict, probs, 'bigram', max_words=25, start_word='<s>')+'\n')
+
 # close all open files
+b3.close()
 b2.close()
 t.close()
 b.close()
