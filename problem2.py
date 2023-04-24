@@ -9,29 +9,68 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 """
 import numpy as np
 from generate import GENERATE
+from problem1 import wordindex
 
-vocab = open("brown_vocab_100.txt")
+def uniprobs(file: str, word_index_dict: dict)->np.ndarray:
+    """_summary_
 
-# load the indices dictionary
-word_index_dict={line.rstrip(): i for i, line in enumerate(vocab)}
+    Args:
+        file (str): A filename of a file containing sentences (corpus).
+        word_index_dict (dict): A dictionary mapping words to indexes.
 
-# open file
-f = open("brown_100.txt")
+    Returns:
+        np.ndarray: Contains an array with unigram probabilities for each word in the corpus.
+    """
+    
+    # Open file
+    f = open(file)
 
-# initialize counts to a zero vector
-counts=np.zeros(len(word_index_dict))
+    # Initialize counts to a zero vector
+    counts=np.zeros(len(word_index_dict))
 
-# iterate through file and update counts
-for sentence in f:
-    words=[word.lower()for word in sentence.split() if word != "<s>" and word != "</s>"] 
-    for word in sentence.split():
-        counts[word_index_dict[word.lower()]]+=1
+    # Iterate through file and update counts
+    for sentence in f:
+        for word in sentence.split():
+            counts[word_index_dict[word.lower()]]+=1
 
-proportion= np.count_nonzero(counts == 1)/len(word_index_dict)
+    # Close file
+    f.close()
 
-# close file
-f.close()
+    # Normalize and writeout counts 
+    probs = counts / np.sum(counts)
+    np.savetxt("unigram_probs.txt", probs)
+    
+    return probs
 
-# normalize and writeout counts. 
-probs = counts / np.sum(counts)
-np.savetxt("unigram_probs.txt", probs)
+
+if __name__ == "__main__":
+
+    # Exercise 2
+
+    # Open file
+    vocab = open("brown_vocab_100.txt")
+
+    # Load the indices dictionary
+    word_index_dict=wordindex(vocab)
+
+    # Calculate uniform probabilities and save in unigram_probs.txt
+    probs=uniprobs("brown_100.txt", word_index_dict)
+
+    # Exercise 6
+
+    # Open toy corpus
+    f = open("toy_corpus.txt")
+
+    with open('unigram_eval.txt', 'w') as uniprobs:
+        # Iterate through sentences in the toy corpus
+        for sentence in f:
+            sent_len=len(sentence.split())
+            sentprob = 1
+            # Iterate through words 
+            for word in sentence.split(): 
+                # Calculate joint probability of all the words in the sentence
+                sentprob *= probs[word_index_dict[word.lower()]]
+            
+            # Calculate perplexity and save to file
+            perplexity = 1/(pow(sentprob, 1.0/sent_len))
+            uniprobs.write(str(perplexity) + "\n")
