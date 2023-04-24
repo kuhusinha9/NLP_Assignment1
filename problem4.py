@@ -15,7 +15,11 @@ import random
 from problem1 import word_index_dict
 
 
-vocab = open("brown_vocab_100.txt")
+word_index_dict = {}
+# read brown_vocab_100.txt into word_index_dict
+with open('brown_vocab_100.txt') as brown_file:
+    word_index_dict={word.rstrip(): i for i, word in enumerate(brown_file)}
+
 f = open("brown_100.txt")
 dictionary= {i.lower(): j for j,i in enumerate(word_index_dict)}
 
@@ -80,6 +84,8 @@ b2.write(str(perplexity(t.readline()))+'\n')
 # Task 7 code
 #
 b3 = open("smoothed_generation.txt",'w')
+
+#generate 10 sentences
 for i in range(0,10):
     b3.write(GENERATE(word_index_dict, probs, 'bigram', max_words=25, start_word='<s>')+'\n')
 
@@ -88,5 +94,5 @@ b3.close()
 b2.close()
 t.close()
 b.close()
-vocab.close()
+brown_file.close()
 f.close()
