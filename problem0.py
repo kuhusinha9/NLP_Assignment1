@@ -26,6 +26,11 @@ def most_freq_pos_tag(words):
 
     pos_tags = sorted(pos_tag_count_dict.items(), key=lambda item: item[1], reverse=True) # pos_tags with counts
     pos_tags_names = [pair[0] for pair in pos_tags] # pos_tags names only
+
+
+    # add ranks to the word frequency
+    for idx, tag in enumerate(pos_tags):
+        pos_tags[idx] = (tag[0], tag[1], f'({idx+1})')
     return pos_tags
 
 def get_word_frequecy(words):
@@ -46,9 +51,11 @@ def get_word_frequecy(words):
 
 def plot_zipf(word_frequency, genres_names, idx):
     # get max frequency for x axis
-    max_freq = word_frequency[0][1]
+    max_freq = len(word_frequency)
     # round on nearest 1000
-    max_freq = int(max_freq/1000)*1000
+    rounder1 = lambda x: int(x/1000)*1000
+    max_freq = rounder1(max_freq)
+    
 
     # plot Zipf's law for frequencies, two supplots one figure
     plt.figure(figsize=(10, 5))
@@ -57,14 +64,14 @@ def plot_zipf(word_frequency, genres_names, idx):
     plt.title(f'Zipf\'s law for frequencies in {genres_names[idx]}')
     plt.xlabel('Rank')
     # set x labels less frequent set 5 ticks from 0 to max_freq
-    plt.xticks([0, max_freq/4, max_freq/2, 3*max_freq/4, max_freq], [0, max_freq/4, max_freq/2, 3*max_freq/4, max_freq])
+    plt.xticks([0, max_freq/4, max_freq/2, 3*max_freq/4, max_freq], [0, int(max_freq/4), int(max_freq/2), int(3*max_freq/4), max_freq])
     plt.ylabel('Frequency')
     plt.subplot(1, 2, 2)
     # log-log plot
     plt.loglog([x[0] for x in word_frequency], [x[1] for x in word_frequency])
     plt.title(f'Zipf\'s law for frequencies in {genres_names[idx]}')
     # set x labels log scale 5 ticks from 1 to max_freq log scale
-    plt.xticks([max_freq**0.2, max_freq**0.4, max_freq**0.6, max_freq**0.8, max_freq], [max_freq**0.2, max_freq**0.4, max_freq**0.6, max_freq**0.8, max_freq])
+    plt.xticks([int(max_freq**0.2), int(max_freq**0.4), int(max_freq**0.6), int(max_freq**0.8), max_freq], [int(max_freq**0.2), int(max_freq**0.4), int(max_freq**0.6), int(max_freq**0.8), max_freq])
 
     plt.xlabel('Rank')
     plt.ylabel('Frequency')
@@ -85,12 +92,14 @@ def main(genres, genres_names):
 
 
     for idx, genre in enumerate(genres):
-        tokens = brown.words(categories = genre)
+        words = brown.words(categories = genre)
         sentences = brown.sents(categories = genre)
         types = brown.tagged_words(categories = genre)
-        
+
+
         #Number of tokens
-        num_of_tokens = len(tokens)
+       
+        num_of_tokens = len(words)
         print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
         #Number of types
@@ -99,7 +108,6 @@ def main(genres, genres_names):
         print(f'The number of unique types in the {genres_names[idx]} is: {num_of_types}')
 
         #Number of words
-        words = [word for word in tokens if word.isalpha()]
         num_of_words = len(words)
         print(f'The number of words in the {genres_names[idx]} is: {num_of_words}')
 
@@ -115,7 +123,7 @@ def main(genres, genres_names):
         
         #Run part-of-speech tagger on the dataset and identify the ten most frequent POS tags.
         pos_tags = most_freq_pos_tag(words)
-        print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:10]}')
+        print(f'The ten most frequent POS tags in the {genres_names[idx]} genre are: {pos_tags[:18]}')
 
         #get word counts of unique words
         word_frequency = get_word_frequecy(words)

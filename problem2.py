@@ -74,3 +74,11 @@ if __name__ == "__main__":
             # Calculate perplexity and save to file
             perplexity = 1/(pow(sentprob, 1.0/sent_len))
             uniprobs.write(str(perplexity) + "\n")
+    uniprobs.close()
+
+    # Exercise 7
+
+    # Generate 10 sentences
+    with open('unigram_generation.txt', 'w') as f:
+        for i in range(10):
+            f.write(GENERATE(word_index_dict, probs, "unigram", max_words=25, start_word="<s>") + "\n")
