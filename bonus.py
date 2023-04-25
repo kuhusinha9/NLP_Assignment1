@@ -27,8 +27,6 @@ for idx, token in enumerate(tokens):
     if token not in word_index_dict[last_word]:
         word_index_dict[last_word][token] = 0
     
-    if last_word == "the" and token == "not":
-        print(tokens[idx -10 : idx + 10])
     word_index_dict[last_word][token] += 1
     last_word = token
 
@@ -47,7 +45,7 @@ for word in word_index_dict:
     for token in word_index_dict[word]:
         if token in word_index_dict: # I am not sure what to do when the token is not in the dict
             pmi_value = pmi(word_index_dict[word][token], len(tokens), (word_index_dict[word]), word_index_dict[token])
-            pmi_list.append((word, token, pmi_value))
+            pmi_list.append((word, token, round(pmi_value,2)))
 
 # sort by pmi
 pmi_list = sorted(pmi_list, key=lambda item: item[2], reverse=True)
@@ -55,7 +53,7 @@ pmi_list = sorted(pmi_list, key=lambda item: item[2], reverse=True)
 # print top 20 
 print("The top 20")
 for i in range(20):
-    print(i, pmi_list[i])
+    print(i+1, pmi_list[i])
 
 # print last 20
 print("The last 20")

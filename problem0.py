@@ -96,10 +96,9 @@ def main(genres, genres_names):
         sentences = brown.sents(categories = genre)
         types = brown.tagged_words(categories = genre)
 
-
         #Number of tokens
-       
-        num_of_tokens = len(words)
+        tokens = words
+        num_of_tokens = len(tokens)
         print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
         #Number of types
