@@ -16,10 +16,10 @@ import random
 
 word_index_dict = {}
 # Read brown_vocab_100.txt into word_index_dict
-with open('brown_vocab_100.txt') as brown_file:
+with open('assigned_txts/brown_vocab_100.txt') as brown_file:
     word_index_dict={word.rstrip(): i for i, word in enumerate(brown_file)}
 
-f = open("brown_100.txt")
+f = open("assigned_txts/brown_100.txt")
 dictionary= {i.lower(): j for j,i in enumerate(word_index_dict)}
 
 # Initialize numpy 0s array
@@ -43,7 +43,7 @@ for word in words[1:]:
 probs = normalize(counts, norm='l1', axis=1)
 
 # Writeout smooth probabilities to smooth_probs.txt
-np.savetxt("smooth_probs.txt", probs)
+np.savetxt("probabilities/smooth_probs.txt", probs)
 
 # Create function to easily access probabilities
 # Bigram('the','all') gives the probability of 'all the' given 'all'
@@ -51,7 +51,7 @@ def bigram(word, prev_word):
     return probs[word_index_dict[prev_word]][word_index_dict[word]]
 
 # Add probabilities to end of file
-b = open("smooth_probs.txt", 'a')
+b = open("probabilities/smooth_probs.txt", 'a')
 b.write(str(bigram('the','all'))+'\n')
 b.write(str(bigram('jury','the'))+'\n')
 b.write(str(bigram('campaign','the'))+'\n')
@@ -59,7 +59,7 @@ b.write(str(bigram('calls','anonymous'))+'\n')
 
 # Exercise 6 
 
-t = open("toy_corpus.txt")
+t = open("assigned_txts/toy_corpus.txt")
 
 # Function to calculate the joint probability of a given sentence
 def joint_prob_sent(sent):
@@ -74,13 +74,13 @@ def perplexity(sent):
     return 1/pow(joint_prob_sent(sent), 1/(len(sent.split())-1))
 
 # Add perplexities to file
-b2= open("smoothed_eval.txt", 'w')
+b2= open("evaluation/smoothed_eval.txt", 'w')
 b2.write(str(perplexity(t.readline()))+'\n')
 b2.write(str(perplexity(t.readline()))+'\n')
 
 # Exercise 7 
 
-b3 = open("smoothed_generation.txt",'w')
+b3 = open("generation/smoothed_generation.txt",'w')
 
 # Generate 10 sentences
 for i in range(0,10):

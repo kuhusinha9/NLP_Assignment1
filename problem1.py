@@ -25,11 +25,11 @@ if __name__ == "__main__":
     word_index_dict = {}
 
     # Read brown_vocab_100.txt into word_index_dict
-    with open('brown_vocab_100.txt') as brown_file:
+    with open('assigned_txts/brown_vocab_100.txt') as brown_file:
         word_index_dict=wordindex(brown_file)
             
     # Write word_index_dict to word_to_index_100.txt
-    wf = open('word_to_index_100.txt','w')
+    wf = open('assigned_txts/word_to_index_100.txt','w')
     wf.write(str(word_index_dict)) 
     wf.close()
 

@@ -16,14 +16,14 @@ import codecs
 import json
 from sklearn.preprocessing import normalize
 
-vocab = codecs.open("brown_vocab_100.txt")
+vocab = codecs.open("assigned_txts/brown_vocab_100.txt")
 
 # Read brown_100.txt into tokens
-with open('brown_100.txt') as brown_file:
+with open('assigned_txts/brown_100.txt') as brown_file:
     tokens = brown_file.read().split()
 
 # Read brown_vocab_100.json into word_index_dict
-with open('word_to_index_100.json') as brown_file:
+with open('assigned_txts/word_to_index_100.json') as brown_file:
     word_index_dict = json.load(brown_file)
 
 #p(past | in, the) (should be 0.0625 for unsmoothed, and ~0.011305 for smoothed)

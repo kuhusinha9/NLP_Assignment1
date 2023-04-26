@@ -38,7 +38,7 @@ def uniprobs(file: str, word_index_dict: dict)->np.ndarray:
 
     # Normalize and writeout counts 
     probs = counts / np.sum(counts)
-    np.savetxt("unigram_probs.txt", probs)
+    np.savetxt("probabilities/unigram_probs.txt", probs)
     
     return probs
 
@@ -48,20 +48,20 @@ if __name__ == "__main__":
     # Exercise 2
 
     # Open file
-    vocab = open("brown_vocab_100.txt")
+    vocab = open("assigned_txts/brown_vocab_100.txt")
 
     # Load the indices dictionary
     word_index_dict=wordindex(vocab)
 
     # Calculate uniform probabilities and save in unigram_probs.txt
-    probs=uniprobs("brown_100.txt", word_index_dict)
+    probs=uniprobs("assigned_txts/brown_100.txt", word_index_dict)
 
     # Exercise 6
 
     # Open toy corpus file
-    f = open("toy_corpus.txt")
+    f = open("assigned_txts/toy_corpus.txt")
 
-    with open('unigram_eval.txt', 'w') as uniprobs:
+    with open('evaluation/unigram_eval.txt', 'w') as uniprobs:
         # Iterate through sentences in the toy corpus
         for sentence in f:
             sent_len=len(sentence.split())
@@ -80,6 +80,6 @@ if __name__ == "__main__":
     # Exercise 7
 
     # Generate 10 sentences
-    with open('unigram_generation.txt', 'w') as f:
+    with open('generation/unigram_generation.txt', 'w') as f:
         for i in range(10):
             f.write(GENERATE(word_index_dict, probs, "unigram", max_words=25, start_word="<s>") + "\n")
