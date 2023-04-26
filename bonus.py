@@ -22,13 +22,22 @@ last_word = tokens[0]
 for idx, token in enumerate(tokens):
     # strip token
     token = token.rstrip().lower()
+    # skip when interpunction is found
+    if token in [".", ",", "!", "?", ";", ":", "(", ")", "[", "]", "{", "}", "'", '"', "`", "``", "''", "--", "-", "_", "...", "...."]:
+        continue
     if last_word not in word_index_dict:
         word_index_dict[last_word] = {}
     if token not in word_index_dict[last_word]:
         word_index_dict[last_word][token] = 0
     
     word_index_dict[last_word][token] += 1
+
+    if last_word == "the" and token == "the":
+        print("Found double the")
+        print(tokens[idx-20:idx+20])
+
     last_word = token
+    
 
 
 # Remove words that occur less than 10 times 
@@ -39,6 +48,8 @@ for word in word_index_copy:
     if occurences < 10:
         del word_index_dict[word]
 
+# print word index the
+
 pmi_list = []
 # Calculate pmi
 for word in word_index_dict:
@@ -46,6 +57,8 @@ for word in word_index_dict:
         if token in word_index_dict: # I am not sure what to do when the token is not in the dict
             pmi_value = pmi(word_index_dict[word][token], len(tokens), (word_index_dict[word]), word_index_dict[token])
             pmi_list.append((word, token, round(pmi_value,2)))
+
+
 
 # Sort by pmi
 pmi_list = sorted(pmi_list, key=lambda item: item[2], reverse=True)
