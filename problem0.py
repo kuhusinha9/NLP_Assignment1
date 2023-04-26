@@ -77,6 +77,17 @@ def plot_zipf(word_frequency, genres_names, idx):
     plt.savefig(f'plots/Zipf\'s law for frequencies in {genres_names[idx]}.png')
     plt.close()
 
+def get_raw_text(sentences):
+    # concatenate words per sentence
+    raw_text = []
+    for sentence in sentences:
+        raw_text.append(' '.join(sentence))
+    
+    # concatenate sentences with new sentence token
+    raw_text = ' '.join(raw_text)
+
+    return raw_text
+
 def main(genres, genres_names):
 
     # Dictionary with word count
@@ -93,9 +104,11 @@ def main(genres, genres_names):
         words = brown.words(categories = genre)
         sentences = brown.sents(categories = genre)
         types = brown.tagged_words(categories = genre)
-
-        # Number of tokens
-        num_of_tokens = len(words)
+        raw_text = get_raw_text(sentences)
+        
+        #Number of tokens
+        tokens = word_tokenize(raw_text)
+        num_of_tokens = len(tokens)
         print(f'The number of tokens in the {genres_names[idx]} is: {num_of_tokens}')
 
         # Number of types
